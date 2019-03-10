@@ -1,33 +1,102 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+html,
+body {
+  height: 100%;
 }
-
-.App-header {
-  background-color: #282c34;
+main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  background: #f9f9f9;
   min-height: 100vh;
+}
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 25vw;
+  max-width: 400px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 24px;
+  background: #f2f2f2;
+}
+.item {
+  margin-bottom: 24px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  display: block;
+  cursor: pointer;
+}
+.item img {
+  width: 100%;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* CONTENT */
+.content {
+  width: 75vw;
+  height: 100%;
+  margin-left: 25vw;
+}
+
+/* SIZE SELECTOR */
+.size-select {
+  margin-bottom: 32px;
+  width: 100%;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+.size-select__btn {
+  width: 56px;
+  height: 32px;
+  margin-right: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.size-select__btn.active {
+  background: rgba(0, 0, 0, 0.5);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.container {
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.28);
+  padding: 2px;
+  min-height: 200px;
+}
+.container.desktop {
+  max-width: 1280px;
+}
+.container.tablet {
+  max-width: 768px;
+  min-height: 1024px;
+}
+.container.mobile {
+  max-width: 375px;
+  min-height: 667px;
+  max-height: 667px;
+  overflow-y: scroll;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content__row {
+  background-color: #ccd8f9;
+  padding: 24px;
+  margin-bottom: 1px;
+  display: flex;
+  justify-content: space-between;
 }
