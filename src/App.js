@@ -1,15 +1,12 @@
 import React, { Component } from "react";
-import Item1 from "./components/Item_1";
-import Item2 from "./components/Item_2";
-import Item3 from "./components/Item_3";
 
 import Container from "./components/Container";
 import ToggleSize from "./components/ToggleSize";
 import ItemSelector from "./components/ItemSelector";
+import ItemList from "./components/ItemList";
 
 import "./App.css";
 import itemData from "./Data";
-console.log("itemData Import: ", itemData);
 
 class App extends Component {
     constructor(props) {
@@ -80,42 +77,7 @@ class App extends Component {
 
     render() {
         const { items, selectedItems, containerSize } = this.state;
-        console.log("Items: ", items);
-        console.log("SelectedItems: ", selectedItems);
 
-        const newItems = selectedItems.map((item, index) => {
-            switch (item) {
-                case "item_1":
-                    return (
-                        <Item1
-                            key={index}
-                            handleDelete={() => this.handleDelete(index)}
-                            handleMoveUp={() => this.handleMoveUp(index)}
-                            handleMoveDown={() => this.handleMoveDown(index)}
-                        />
-                    );
-                case "item_2":
-                    return (
-                        <Item2
-                            key={index}
-                            handleDelete={() => this.handleDelete(index)}
-                            handleMoveUp={() => this.handleMoveUp(index)}
-                            handleMoveDown={() => this.handleMoveDown(index)}
-                        />
-                    );
-                case "item_3":
-                    return (
-                        <Item3
-                            key={index}
-                            handleDelete={() => this.handleDelete(index)}
-                            handleMoveUp={() => this.handleMoveUp(index)}
-                            handleMoveDown={() => this.handleMoveDown(index)}
-                        />
-                    );
-                default:
-                    return null;
-            }
-        }, this);
         return (
             <div>
                 <main>
@@ -129,7 +91,14 @@ class App extends Component {
                         <ToggleSize
                             toggleSizeClass={this.handleContainerSize}
                         />
-                        <Container size={containerSize}>{newItems}</Container>
+                        <Container size={containerSize}>
+                            <ItemList
+                                selectedItems={selectedItems}
+                                handleDelete={this.handleDelete}
+                                handleMoveUp={this.handleMoveUp}
+                                handleMoveDown={this.handleMoveDown}
+                            />
+                        </Container>
                     </section>
                 </main>
             </div>
