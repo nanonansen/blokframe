@@ -6,7 +6,7 @@ const buttons = [{ name: "mobile" }, { name: "tablet" }, { name: "desktop" }];
 class ToggleSize extends Component {
     constructor(props) {
         super(props);
-        this.state = { name: "desktop" };
+        this.state = { name: "tablet" };
     }
 
     handleButtonClick = e => {

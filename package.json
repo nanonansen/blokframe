@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "blueimp-canvas-to-blob": "^3.14.0",
+    "file-saver": "^2.0.1",
+    "html2canvas": "^1.0.0-alpha.12",
+    "jspdf": "^1.5.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "underscore": "^1.9.1"
   },
   "scripts": {
     "start": "react-scripts start",

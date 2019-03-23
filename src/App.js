@@ -4,6 +4,9 @@ import Container from "./components/Container";
 import ToggleSize from "./components/ToggleSize";
 import ItemSelector from "./components/ItemSelector";
 import ItemList from "./components/ItemList";
+import Icon from "./icons/index";
+
+import html2canvas from "html2canvas";
 
 import "./App.css";
 import itemData from "./Data";
@@ -17,17 +20,46 @@ class App extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleMoveUp = this.handleMoveUp.bind(this);
         this.handleMoveDown = this.handleMoveDown.bind(this);
+        this.handlePageRender = this.handlePageRender.bind(this);
+        this.handleCreateNew = this.handleCreateNew.bind(this);
+        this.addCanvasAsURL = this.addCanvasAsURL.bind(this);
+
+        this.renderEl = React.createRef();
+        this.downloadBtn = React.createRef();
     }
     componentDidMount() {
-        console.log("CDM State: ", this.state);
+        console.log("componentDidMount");
     }
 
+    handleCreateNew = () => {
+        const downloadBtn = this.downloadBtn.current;
+        downloadBtn.href = "#";
+        this.setState({ selectedItems: [], download: null });
+    };
+
+    handlePageRender = () => {
+        const input = this.renderEl.current;
+        if (this.state.selectedItems.length > 0) {
+            this.addCanvasAsURL(input);
+        }
+    };
+
+    addCanvasAsURL = input => {
+        const downloadBtn = this.downloadBtn.current;
+        const options = { logging: false };
+        html2canvas(input, options).then(canvas => {
+            canvas.toBlob(function(blob) {
+                downloadBtn.href = URL.createObjectURL(blob);
+            });
+        });
+    };
+
     handleItemSelect = e => {
-        console.log("e.target.value: ", e.currentTarget.value);
-        const item = e.currentTarget.value;
+        const item = this.state.items[e.currentTarget.value];
 
         this.setState(prevState => ({
-            selectedItems: [...prevState.selectedItems, item]
+            selectedItems: [...prevState.selectedItems, item],
+            download: true
         }));
     };
 
@@ -46,9 +78,21 @@ class App extends Component {
         });
     };
 
-    handleMoveUp = index => {
-        console.log("Move up: ", index);
+    componentDidUpdate() {
+        console.log("Component did update");
+        const downloadBtn = this.downloadBtn.current;
 
+        if (this.state.selectedItems.length < 1) {
+            console.log("No more items on canvas, no page render");
+            downloadBtn.className = "btn disabled";
+        } else {
+            console.log("There are still items on canvas");
+            this.handlePageRender();
+            downloadBtn.className = "btn primary";
+        }
+    }
+
+    handleMoveUp = index => {
         if (index > 0) {
             this.setState(prevState => {
                 let newData = prevState.selectedItems.slice();
@@ -82,22 +126,55 @@ class App extends Component {
             <div>
                 <main>
                     <section className="sidebar">
+                        <div className="logo">
+                            <Icon name={"logo"} />
+                        </div>
                         <ItemSelector
                             items={items}
                             handleItemSelect={this.handleItemSelect}
                         />
+                        <div className="sidebar__bottom_bar">
+                            <a
+                                onClick={this.handlePageRender}
+                                className="btn disabled"
+                                href="#null"
+                                download="image.png"
+                                ref={this.downloadBtn}
+                            >
+                                Download as PNG
+                            </a>
+                            <a
+                                onClick={this.handleCreateNew}
+                                className="btn secondary"
+                                href="#null"
+                            >
+                                Create New
+                            </a>
+                        </div>
                     </section>
                     <section className="content">
                         <ToggleSize
                             toggleSizeClass={this.handleContainerSize}
                         />
                         <Container size={containerSize}>
-                            <ItemList
-                                selectedItems={selectedItems}
-                                handleDelete={this.handleDelete}
-                                handleMoveUp={this.handleMoveUp}
-                                handleMoveDown={this.handleMoveDown}
-                            />
+                            {selectedItems.length ? (
+                                <div ref={this.renderEl}>
+                                    <ItemList
+                                        selectedItems={selectedItems}
+                                        handleDelete={this.handleDelete}
+                                        handleMoveUp={this.handleMoveUp}
+                                        handleMoveDown={this.handleMoveDown}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="empty-state">
+                                    <h3>Hey, it's empty here!</h3>
+                                    <p>
+                                        Add a few Bloks from the sidebar to get
+                                        a wireframe going.
+                                    </p>
+                                </div>
+                            )}
                         </Container>
                     </section>
                 </main>

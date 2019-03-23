@@ -1,32 +1,24 @@
 import React from "react";
+import _ from "lodash";
 
-const ItemSelector = props => {
-    console.log(props);
+import PatternGroup from "./PatternGroup";
 
-    const itemBtns = props.items.map((item, index) => {
+const PatternSelect = props => {
+    const groupedItems = _.groupBy(props.items, "category");
+
+    const entries = Object.entries(groupedItems);
+    const itemBtns = entries.map((entry, index) => {
         return (
-            <div key={index}>
-                <button
-                    className="item"
-                    onClick={props.handleItemSelect}
-                    value={item.name}
-                >
-                    <div>
-                        <span>Add Pattern</span>
-                        <img
-                            className="item__img"
-                            src={item.img}
-                            alt={item.name}
-                        />
-                    </div>
-
-                    <span className="item__title">{item.name}</span>
-                </button>
-            </div>
+            <PatternGroup
+                category={entry[0]}
+                key={entry[0]}
+                items={entry[1]}
+                handleItemSelect={props.handleItemSelect}
+            />
         );
-    }, this);
+    });
 
     return <>{itemBtns}</>;
 };
 
-export default ItemSelector;
+export default PatternSelect;
